@@ -18,13 +18,16 @@ var (
 	db               *sqlx.DB
 )
 
+type Messenger int
+
 func connectToDB() {
 	var err error
 	db, err = sqlx.Open("pgx", *connectionString)
 	if err != nil {
 		log.Fatalf("Unable to establish connection: %v\n", err)
 	}
-	db.SetMaxOpenConns(20)
+	db.SetMaxOpenConns(100)
+	db.SetMaxIdleConns(100)
 }
 
 func createServer() {
